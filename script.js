@@ -49,6 +49,54 @@ window.addEventListener("load", () => {
         section.style.transform = "translateY(30px)";
     });
 });
+// Smooth scroll to section when nav link is clicked
+document.querySelectorAll("nav ul li a").forEach(link => {
+  link.addEventListener("click", function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      window.scrollTo({
+        top: target.offsetTop - 60,
+        behavior: "smooth"
+      });
+    }
+  });
+});
+
+// Show/hide "Back to Top" button on scroll
+const topBtn = document.getElementById("topBtn");
+
+window.onscroll = function () {
+  const scrolled = document.body.scrollTop > 100 || document.documentElement.scrollTop > 100;
+  topBtn.style.display = scrolled ? "block" : "none";
+  updateActiveLink(); // Highlight nav link based on scroll
+};
+
+// Scroll to top when button is clicked
+topBtn.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Highlight active section's nav link
+function updateActiveLink() {
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll("nav ul li a");
+  let current = "";
+
+  sections.forEach(section => {
+    const offsetTop = section.offsetTop - 70;
+    if (pageYOffset >= offsetTop) {
+      current = section.getAttribute("id");
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.remove("active");
+    if (link.getAttribute("href").includes(current)) {
+      link.classList.add("active");
+    }
+  });
+}
 
 // Smooth scroll to section when nav link is clicked
 document.querySelectorAll("nav ul li a").forEach(link => {
